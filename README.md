@@ -1,8 +1,8 @@
 
-<h1 align="center"> <a href="http://birobirobiro.dev">dt money</a> </h1>
+<h1 align="center">dt money</h1>
 
 <p align="center">
-  <img src=".github/preview.gif" alt="Preview"/>
+  <img src=".github/preview.png" alt="Preview"/>
 </p>
 
 # 💻 Projeto
