@@ -26,11 +26,6 @@ export const Container = styled.div`
         max-width: 700px;
         width: 100%;
       }
-
-      a,
-      span {
-        font-size: 1rem;
-      }
     }
 
     strong {

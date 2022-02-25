@@ -8,24 +8,24 @@ import { Container } from "./styles";
 
 export function Summary() {
 
-  const { transactions } = useTransactions()
+  // const { transactions } = useTransactions()
 
-  const summary = transactions.reduce((acc, transaction) => {
+  // const summary = transactions.reduce((acc, transaction) => {
 
-    if (transaction.type === "deposit") {
-      acc.deposits += transaction.amount;
-      acc.total += transaction.amount;
-    } else {
-      acc.withdraws += transaction.amount;
-      acc.total -= transaction.amount;
-    }
+  //   if (transaction.type === "deposit") {
+  //     acc.deposits += transaction.amount;
+  //     acc.total += transaction.amount;
+  //   } else {
+  //     acc.withdraws += transaction.amount;
+  //     acc.total -= transaction.amount;
+  //   }
 
-    return acc;
-  }, {
-    deposits: 0,
-    withdraws: 0,
-    total: 0
-  })
+  //   return acc;
+  // }, {
+  //   deposits: 0,
+  //   withdraws: 0,
+  //   total: 0
+  // })
 
 
   return (
@@ -38,7 +38,7 @@ export function Summary() {
         <strong>{new Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL'
-        }).format(summary.deposits)}</strong>
+        }).format(25000)}</strong>
       </div>
       <div>
         <header>
@@ -48,7 +48,7 @@ export function Summary() {
         <strong>- {new Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL'
-        }).format(summary.withdraws)}</strong>
+        }).format(5000)}</strong>
       </div>
       <div className="highlight-background">
         <header>
@@ -58,7 +58,7 @@ export function Summary() {
         <strong>{new Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL'
-        }).format(summary.total)}</strong>
+        }).format(20000)}</strong>
       </div>
     </Container>
   );

@@ -40,21 +40,6 @@ export function NewDashboard() {
             src={accountantImg}
             alt="Ilustração de uma mulher usando calculadra"
           />
-          <span>
-            <a
-              href="https://iconscout.com/illustrations/accountant"
-              target="_blank"
-            >
-              Accountant Illustration
-            </a>
-            <span> by </span>
-            <a
-              href="https://iconscout.com/contributors/delesign"
-              target="_blank"
-            >
-              Delesign Graphics
-            </a>
-          </span>
         </div>
       </aside>
 

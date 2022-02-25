@@ -1,6 +1,7 @@
 import logoImg from "../../assets/logo.svg";
 import copyImg from "../../assets/copy.svg";
 import { Container, Content } from "./styles";
+import toast from "react-hot-toast";
 
 interface HeaderProps {
   onOpenNewTransactionModal: () => void;
@@ -10,7 +11,9 @@ interface HeaderProps {
 export function Header({ onOpenNewTransactionModal, code }: HeaderProps) {
 
   function copyDashboardCodeToClipboard() {
-    navigator.clipboard.writeText(code || '')
+    navigator.clipboard.writeText(code || '').then(() => {
+      toast.success('Copiado para a área de transferência!')
+    })
   }
 
   return (

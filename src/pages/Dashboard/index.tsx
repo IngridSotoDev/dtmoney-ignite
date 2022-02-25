@@ -1,9 +1,9 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import Modal from "react-modal";
 import { Header } from "../../components/Header";
 import { Transactions } from "../../components/Transactions";
 import { NewTransactionModal } from "../../components/NewTransactionModal";
-import { useParams } from "react-router-dom";
 
 Modal.setAppElement("#root");
 
@@ -12,7 +12,6 @@ type DashboardParams = {
 };
 
 export function Dashboard() {
-
   const { id } = useParams<DashboardParams>();
   const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] =
     useState(false);
@@ -27,7 +26,10 @@ export function Dashboard() {
 
   return (
     <>
-      <Header code={id} onOpenNewTransactionModal={handleOpenNewTransactionModal} />
+      <Header
+        code={id}
+        onOpenNewTransactionModal={handleOpenNewTransactionModal}
+      />
 
       <Transactions />
 

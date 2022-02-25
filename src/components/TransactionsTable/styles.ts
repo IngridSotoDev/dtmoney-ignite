@@ -5,18 +5,18 @@ export const Container = styled.div`
 
   table {
     width: 100%;
-    border-spacing: 0 0.5rem;
+    border-spacing: 0 1rem;
 
     th {
       color: var(--text-body);
       font-weight: 400;
-      padding: 1rem 2rem;
+      padding: 1.5rem 2.5rem;
       text-align: left;
-      line-height: 1.5rem;
+      line-height: 2.5rem;
     }
 
     td {
-      padding: 1rem 2rem;
+      padding: 2rem 2.5rem;
       border: 0;
       text-align: left;
       background: var(--shape);
@@ -33,6 +33,17 @@ export const Container = styled.div`
 
       &.withdraw {
         color: var(--red);
+      }
+
+      button {
+        display: flex;
+        background: transparent;
+        border: 0;
+
+        img {
+          width: 2rem;
+          height: 2rem;
+        }
       }
     }
   }

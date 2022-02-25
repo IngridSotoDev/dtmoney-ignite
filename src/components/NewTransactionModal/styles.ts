@@ -2,23 +2,26 @@ import styled from "styled-components";
 import { darken, transparentize } from "polished";
 
 export const Container = styled.form`
+  display: flex;
+  flex-direction: column;
+
   h2 {
     color: var(--text-title);
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     margin-bottom: 2rem;
   }
 
   input {
     width: 100%;
-    padding: 0 1.5rem;
-    height: 4rem;
+    padding: 0 1.8rem;
+    height: 5rem;
 
     border-radius: 0.25rem;
     border: 1px solid #d7d7d7;
     background: var(--input-background);
 
     font-weight: 400;
-    font-size: 1rem;
+    font-size: 1.6rem;
 
     &::placeholder {
       color: var(--text-body);
@@ -30,17 +33,17 @@ export const Container = styled.form`
   }
 
   button[type="submit"] {
-    width: 100%;
-    padding: 0 1.5rem;
-    margin-top: 1.5rem;
-    height: 4rem;
+    align-self: end;
+    padding: 0 2.4rem;
+    margin-top: 2rem;
+    height: 5rem;
 
     background: var(--green);
     color: var(--shape);
     border-radius: 0.25rem;
     border: 0;
 
-    font-size: 1rem;
+    font-size: 1.6rem;
     font-weight: 600;
     line-height: 2rem;
 
@@ -61,21 +64,24 @@ export const TransactionTyleContainer = styled.div`
 
 interface RadioBoxProps {
   isActive: boolean;
-  activeColor: 'green' | 'red';
+  activeColor: "green" | "red";
 }
 
 const colors = {
-  green: '#33CC95',
-  red: '#E62E4D'
-}
+  green: "#33CC95",
+  red: "#E62E4D",
+};
 
 export const RadioBox = styled.button<RadioBoxProps>`
-  height: 4rem;
-  padding: 0 1.5rem;
+  height: 5rem;
+  padding: 0 1.8rem;
   border: 1px solid #d7d7d7;
   border-radius: 0.25rem;
 
-  background: ${(props) => props.isActive ? transparentize(0.9, colors[props.activeColor]) : 'transparent'};
+  background: ${(props) =>
+    props.isActive
+      ? transparentize(0.9, colors[props.activeColor])
+      : "transparent"};
 
   display: flex;
   align-items: center;
@@ -88,14 +94,14 @@ export const RadioBox = styled.button<RadioBoxProps>`
   }
 
   img {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 2rem;
+    height: 2rem;
   }
 
   span {
     display: inline-block;
     margin-left: 1rem;
-    font-size: 1rem;
+    font-size: 1.6rem;
     color: var(--text-title);
   }
 `;

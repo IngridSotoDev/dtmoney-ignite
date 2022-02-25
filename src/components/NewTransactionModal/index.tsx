@@ -10,6 +10,7 @@ import { Container, TransactionTyleContainer, RadioBox } from "./styles";
 import { database } from "../../services/firebase";
 import { useAuth } from "../../hooks/useAuth";
 import { useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 interface NewTransactionModalProps {
   isOpen: boolean;
@@ -45,7 +46,7 @@ export function NewTransactionModal({
 
     if (!user) {
       signInWithGoogle();
-      throw new Error("You must be logged in!");
+      toast.error('Você precisa estar logado!')
     }
 
     const createdAt = `${new Date()}`
@@ -59,13 +60,14 @@ export function NewTransactionModal({
         createdAt
       },
       author: {
-        name: user.name,
+        name: user?.name,
       },
     };
-    console.log(transaction);
-    
-    await database.ref(`dashboards/${id}/transactions`).push(transaction);
 
+    await database.ref(`dashboards/${id}/transactions`).push(transaction).then(() => {
+      toast.success('Transação criada com sucesso!')
+    })
+    
     setTitle("");
     setAmount(0);
     setCategory("");

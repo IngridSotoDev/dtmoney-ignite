@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { database } from "../../services/firebase";
+import deleteImg from "../../assets/delete.svg";
 import { Container } from "./styles";
+import toast from "react-hot-toast";
 
 type FirebaseTransactions = Record<
   string,
@@ -65,6 +67,15 @@ export function TransactionsTable() {
     });
   }, [id]);
 
+  async function handleRemoveTransaction(transactionId: string) {
+    await database
+      .ref(`/dashboards/${id}/transactions/${transactionId}`)
+      .remove()
+      .then(() => {
+        toast.success("Transação removida!");
+      });
+  }
+
   return (
     <Container>
       <table>
@@ -93,6 +104,13 @@ export function TransactionsTable() {
                   {new Intl.DateTimeFormat("pt-BR").format(
                     new Date(transaction.content.createdAt)
                   )}
+                </td>
+                <td>
+                  <button
+                    onClick={() => handleRemoveTransaction(transaction.id)}
+                  >
+                    <img src={deleteImg} alt="Excluir item" />
+                  </button>
                 </td>
               </tr>
             );
