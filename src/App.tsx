@@ -1,35 +1,21 @@
-import { useState } from "react";
-import Modal from "react-modal";
-import { TransactionsProvider } from "./hooks/useTransactions";
-import { Dashboard } from "./components/Dashboard";
-import { Header } from "./components/Header";
-import { NewTransactionModal } from "./components/NewTransactionModal";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthContextProvider } from "./contexts/AuthContext";
+// import { TransactionsProvider } from "./hooks/useTransactions";
+import { Home } from "./pages/Home";
+import { NewDashboard } from "./pages/NewDashboard";
 import { GlobalStyle } from "./styles/global";
 
-Modal.setAppElement('#root')
-
 export function App() {
-  const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] = useState(false);
-  
-  function handleOpenNewTransactionModal() {
-    setIsNewTransactionModalOpen(true);
-  }
-
-  function handleCloseNewTransactionModal() {
-    setIsNewTransactionModalOpen(false);
-  }
   return (
-    <TransactionsProvider>
-      <Header onOpenNewTransactionModal={handleOpenNewTransactionModal} />
+    <BrowserRouter>
+      <AuthContextProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard/new" element={<NewDashboard />} />
+        </Routes>
 
-      <Dashboard />
-
-      <NewTransactionModal 
-        isOpen={isNewTransactionModalOpen}
-        onRequestClose={handleCloseNewTransactionModal}
-      />
-
-      <GlobalStyle />
-    </TransactionsProvider>
+        <GlobalStyle />
+      </AuthContextProvider>
+    </BrowserRouter>
   );
 }
