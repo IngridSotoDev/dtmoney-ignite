@@ -3,17 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { database } from "../../services/firebase";
 import { useAuth } from "../../hooks/useAuth";
 
-import { Button } from "../../components/Button";
 import accountantImg from "../../assets/accountant.svg";
 import logoImg from "../../assets/logo.svg";
 import googleIconImg from "../../assets/google-icon.svg";
 
-import { Container } from "./styles";
+import { ButtonAccess, Container } from "./styles";
 
 export function Home() {
   const navigate = useNavigate();
   const { user, signInWithGoogle } = useAuth();
-  const [roomCode, setRoomCode] = useState("");
+  const [dashboardCode, setDashboardCode] = useState("");
 
   async function handleCreateDashboard() {
     if (!user) {
@@ -23,33 +22,33 @@ export function Home() {
     navigate("/dashboard/new");
   }
 
-  async function handleJoinRoom(event: FormEvent) {
+  async function handleJoinDashboard(event: FormEvent) {
     event.preventDefault();
 
-    if (roomCode.trim() === "") {
+    if (dashboardCode.trim() === "") {
       return;
     }
 
-    const roomRef = await database.ref(`rooms/${roomCode}`).get();
+    const dashboardRef = await database.ref(`dashboards/${dashboardCode}`).get();
 
-    if (!roomRef.exists()) {
-      alert("Room does not exists.");
+    if (!dashboardRef.exists()) {
+      alert("Dashboard does not exists.");
       return;
     }
 
-    if (roomRef.val().endedAt) {
-      alert("Room already closed.");
+    if (dashboardRef.val().endedAt) {
+      alert("Dashboard already closed.");
       return;
     }
 
-    // navigate(`/rooms/${roomCode}`);
+    navigate(`/dashboard/${dashboardCode}`);
   }
 
   return (
     <Container>
       <aside>
         <strong>Controle as suas finanças</strong>
-        <p>Tenha controle do seu fluxo de caixa</p>
+        <p>Tenha controle do seu fluxo financeiro</p>
         <div className="illustration">
           <img
             src={accountantImg}
@@ -79,21 +78,21 @@ export function Home() {
             <img src={logoImg} alt="dt-money web" />
           </a>
 
-          <button onClick={handleCreateDashboard} className="create-painel">
+          <button onClick={handleCreateDashboard} className="create-dashboard">
             <img src={googleIconImg} alt="Logo do Google" />
             Crie seu dashboard com o Google
           </button>
 
           <div className="separator">ou entre em um dashboard</div>
 
-          <form onSubmit={handleJoinRoom}>
+          <form onSubmit={handleJoinDashboard}>
             <input
               type="text"
-              placeholder="Digite o código da sala"
-              onChange={(event) => setRoomCode(event.target.value)}
-              value={roomCode}
+              placeholder="Digite o código do dashboard"
+              onChange={(event) => setDashboardCode(event.target.value)}
+              value={dashboardCode}
             />
-            <Button type="submit">Entrar na sala</Button>
+            <ButtonAccess type="submit">Acessar dashboard</ButtonAccess>
           </form>
         </div>
       </main>

@@ -1,16 +1,15 @@
-import {Link, useNavigate} from 'react-router-dom'
-import { Button } from "../../components/Button";
+import { FormEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { database } from "../../services/firebase";
+import { useAuth } from "../../hooks/useAuth";
+
 import accountantImg from "../../assets/accountant.svg";
 import logoImg from "../../assets/logo.svg";
-
-import { Container } from "./styles";
-import { FormEvent, useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
-import { database } from '../../services/firebase';
+import { ButtonCreate, Container } from "./styles";
 
 export function NewDashboard() {
   const { user } = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [newDashboard, setNewDashboard] = useState("");
 
@@ -25,13 +24,11 @@ export function NewDashboard() {
 
     const firebaseDashboard = await dashboardRef.push({
       title: newDashboard,
-      authorId: user?.id
+      authorId: user?.id,
     });
 
-    navigate(`/dashboard/${firebaseDashboard.key}`)
-
+    navigate(`/dashboard/${firebaseDashboard.key}`);
   }
-
 
   return (
     <Container>
@@ -66,14 +63,19 @@ export function NewDashboard() {
           <img src={logoImg} alt="dt-money web" />
           <h2>Criar um dashboard</h2>
 
-          <form>
+          <form onSubmit={handleCreateDashboard}>
             <input
               type="text"
               placeholder="Nome do Dashboard"
+              value={newDashboard}
+              onChange={(event) => setNewDashboard(event.target.value)}
             />
-            <Button type="submit">Criar Dashboard</Button>
+            <ButtonCreate type="submit">Criar Dashboard</ButtonCreate>
           </form>
-          <p>Quer acessar um dashboard existente? <Link to={"/"}>Clique aqui</Link></p>
+          <p>
+            Quer acessar um dashboard existente?{" "}
+            <Link to={"/"}>Clique aqui</Link>
+          </p>
         </div>
       </main>
     </Container>

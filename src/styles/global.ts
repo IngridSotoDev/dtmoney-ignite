@@ -25,6 +25,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   html {
+    font-size: 62.5%; /* 10px */
+    
     @media (max-width: 1080px) {
       font-size: 93.75%;
     }
@@ -40,6 +42,8 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body, input, textarea, button {
+    /* Intervalo de tamanho = menor, padrão, maior */
+    font-size: clamp(14px, 1.6rem, 2vw);
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
     outline: none;

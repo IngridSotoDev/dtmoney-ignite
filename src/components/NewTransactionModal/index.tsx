@@ -1,39 +1,76 @@
 import { FormEvent, useState } from "react";
 import Modal from "react-modal";
-import { useTransactions } from "../../hooks/useTransactions";
+// import { useTransactions } from "../../hooks/useTransactions";
 
 import closeImg from "../../assets/close.svg";
 import incomeImg from "../../assets/income.svg";
 import outcomeImg from "../../assets/outcome.svg";
 import { Container, TransactionTyleContainer, RadioBox } from "./styles";
+// import { transitions } from "polished";
+import { database } from "../../services/firebase";
+import { useAuth } from "../../hooks/useAuth";
+import { useParams } from "react-router-dom";
 
 interface NewTransactionModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
 }
 
-export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionModalProps) {
-  const { createTransaction } = useTransactions()
+type DashboardParams = {
+  id: string;
+};
 
-  const [title, setTitle] = useState('');
+export function NewTransactionModal({
+  isOpen,
+  onRequestClose,
+}: NewTransactionModalProps) {
+  const { id } = useParams<DashboardParams>();
+  const { user, signInWithGoogle } = useAuth();
+  const [title, setTitle] = useState("");
   const [amount, setAmount] = useState(0);
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState("");
   const [type, setType] = useState("deposit");
 
   async function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault();
 
-    await createTransaction({
-      title,
-      amount,
-      category,
-      type
-    })
-    setTitle('')
-    setAmount(0)
-    setCategory('')
-    setType('deposit')
-    onRequestClose()
+    if (
+      title.trim() === "" ||
+      amount === 0 ||
+      category.trim() === "" ||
+      type.trim() === ""
+    ) {
+      return;
+    }
+
+    if (!user) {
+      signInWithGoogle();
+      throw new Error("You must be logged in!");
+    }
+
+    const createdAt = `${new Date()}`
+
+    const transaction = {
+      content: {
+        title,
+        amount,
+        category,
+        type,
+        createdAt
+      },
+      author: {
+        name: user.name,
+      },
+    };
+    console.log(transaction);
+    
+    await database.ref(`dashboards/${id}/transactions`).push(transaction);
+
+    setTitle("");
+    setAmount(0);
+    setCategory("");
+    setType("deposit");
+    onRequestClose();
   }
 
   return (
@@ -54,13 +91,22 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
       <Container onSubmit={handleCreateNewTransaction}>
         <h2>Cadastrar Transação</h2>
 
-        <input placeholder="Título" value={title} onChange={event => setTitle(event.target.value)} />
-        <input placeholder="Valor" type="number" value={amount} onChange={event => setAmount(Number(event.target.value))} />
+        <input
+          placeholder="Título"
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
+        />
+        <input
+          placeholder="Valor"
+          type="number"
+          value={amount}
+          onChange={(event) => setAmount(Number(event.target.value))}
+        />
 
         <TransactionTyleContainer>
           <RadioBox
             type="button"
-            isActive={type === 'deposit'}
+            isActive={type === "deposit"}
             activeColor="green"
             onClick={() => {
               setType("deposit");
@@ -72,7 +118,7 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
 
           <RadioBox
             type="button"
-            isActive={type === 'withdraw'}
+            isActive={type === "withdraw"}
             activeColor="red"
             onClick={() => {
               setType("withdraw");
@@ -83,7 +129,11 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
           </RadioBox>
         </TransactionTyleContainer>
 
-        <input placeholder="Categoria" value={category} onChange={event => setCategory(event.target.value)} />
+        <input
+          placeholder="Categoria"
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+        />
         <button type="submit">Cadastrar</button>
       </Container>
     </Modal>
