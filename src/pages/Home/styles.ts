@@ -82,6 +82,10 @@ export const Container = styled.div`
 
       button {
         margin-top: 1.6rem;
+
+        svg {
+          margin-right: 1rem;
+        }
       }
 
       button,
@@ -119,7 +123,7 @@ export const Container = styled.div`
     transition: filter 0.2s;
 
     img {
-      margin-right: 0.8rem;
+      margin-right: 1rem;
     }
 
     &:hover {

@@ -2,18 +2,17 @@ import logoImg from "../../assets/logo.svg";
 import copyImg from "../../assets/copy.svg";
 import { Container, Content } from "./styles";
 import toast from "react-hot-toast";
+import { FiCopy, FiCornerLeftUp } from "react-icons/fi";
 
 interface HeaderProps {
-  onOpenNewTransactionModal: () => void;
   code?: string;
 }
 
-export function Header({ onOpenNewTransactionModal, code }: HeaderProps) {
-
+export function Header({ code }: HeaderProps) {
   function copyDashboardCodeToClipboard() {
-    navigator.clipboard.writeText(code || '').then(() => {
-      toast.success('Copiado para a área de transferência!')
-    })
+    navigator.clipboard.writeText(code || "").then(() => {
+      toast.success("Copiado para a área de transferência!");
+    });
   }
 
   return (
@@ -21,16 +20,19 @@ export function Header({ onOpenNewTransactionModal, code }: HeaderProps) {
       <Content>
         <img src={logoImg} alt="dtmoney" />
 
-        <button className="copy-dashboard-id" onClick={copyDashboardCodeToClipboard}>
-          <div>
-            <img src={copyImg} alt="Copiar código do dashboard" />
-          </div>
-          <span>#{code}</span>
-        </button>
+        <div>
+          <button onClick={copyDashboardCodeToClipboard}>
+            <div>
+              <FiCopy aria-label="Copiar código do dashboard" />
+            </div>
+            <span>#{code}</span>
+          </button>
 
-        <button type="button" onClick={onOpenNewTransactionModal}>
-          Nova Transação
-        </button>
+          <div className="text-id-dashboard">
+            <FiCornerLeftUp />
+            <span>ID Dashboard</span>
+          </div>
+        </div>
       </Content>
     </Container>
   );

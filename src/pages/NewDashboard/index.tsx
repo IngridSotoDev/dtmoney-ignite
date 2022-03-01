@@ -25,7 +25,7 @@ export function NewDashboard() {
     const firebaseDashboard = await dashboardRef.push({
       title: newDashboard,
       authorId: user?.id,
-    });
+    })
 
     navigate(`/dashboard/${firebaseDashboard.key}`);
   }

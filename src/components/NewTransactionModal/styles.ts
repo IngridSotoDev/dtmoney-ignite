@@ -93,9 +93,10 @@ export const RadioBox = styled.button<RadioBoxProps>`
     border-color: ${darken(0.1, "#d7d7d7")};
   }
 
-  img {
+  svg {
     width: 2rem;
     height: 2rem;
+    color: ${(props) => colors[props.activeColor]}
   }
 
   span {

@@ -1,16 +1,13 @@
 import { FormEvent, useState } from "react";
-import Modal from "react-modal";
-// import { useTransactions } from "../../hooks/useTransactions";
-
-import closeImg from "../../assets/close.svg";
-import incomeImg from "../../assets/income.svg";
-import outcomeImg from "../../assets/outcome.svg";
-import { Container, TransactionTyleContainer, RadioBox } from "./styles";
-// import { transitions } from "polished";
-import { database } from "../../services/firebase";
-import { useAuth } from "../../hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import Modal from "react-modal";
+import { FiArrowDownCircle, FiArrowUpCircle, FiX } from "react-icons/fi";
+import { database } from "../../services/firebase";
+import { useAuth } from "../../hooks/useAuth";
+// import { useTransactions } from "../../hooks/useTransactions";
+import { Container, TransactionTyleContainer, RadioBox } from "./styles";
+// import { transitions } from "polished";
 
 interface NewTransactionModalProps {
   isOpen: boolean;
@@ -41,7 +38,8 @@ export function NewTransactionModal({
       category.trim() === "" ||
       type.trim() === ""
     ) {
-      return;
+      toast.error('Favor preencher todos os campos!')
+      return
     }
 
     if (!user) {
@@ -87,7 +85,7 @@ export function NewTransactionModal({
         onClick={onRequestClose}
         className="react-modal-close"
       >
-        <img src={closeImg} alt="Fechar modal" />
+        <FiX aria-label="Fechar modal" />
       </button>
 
       <Container onSubmit={handleCreateNewTransaction}>
@@ -114,7 +112,8 @@ export function NewTransactionModal({
               setType("deposit");
             }}
           >
-            <img src={incomeImg} alt="Entrada" />
+
+            <FiArrowUpCircle aria-label="Entrada" />
             <span>Entrada</span>
           </RadioBox>
 
@@ -126,7 +125,7 @@ export function NewTransactionModal({
               setType("withdraw");
             }}
           >
-            <img src={outcomeImg} alt="Saída" />
+            <FiArrowDownCircle aria-label="Saída" />
             <span>Saída</span>
           </RadioBox>
         </TransactionTyleContainer>

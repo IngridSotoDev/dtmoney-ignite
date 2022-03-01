@@ -2,12 +2,14 @@ import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { database } from "../../services/firebase";
 import { useAuth } from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 import accountantImg from "../../assets/accountant.svg";
 import logoImg from "../../assets/logo.svg";
 import googleIconImg from "../../assets/google-icon.svg";
 
 import { ButtonAccess, Container } from "./styles";
+import { FiLogIn } from "react-icons/fi";
 
 export function Home() {
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ export function Home() {
     const dashboardRef = await database.ref(`dashboards/${dashboardCode}`).get();
 
     if (!dashboardRef.exists()) {
-      alert("Dashboard does not exists.");
+      toast.error("Dashboard não encontrado!");
       return;
     }
 
@@ -77,7 +79,10 @@ export function Home() {
               onChange={(event) => setDashboardCode(event.target.value)}
               value={dashboardCode}
             />
-            <ButtonAccess type="submit">Acessar dashboard</ButtonAccess>
+            <ButtonAccess type="submit">
+              <FiLogIn aria-label="Acessar dashboard" />
+              Acessar dashboard
+              </ButtonAccess>
           </form>
         </div>
       </main>

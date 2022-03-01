@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { database } from "../../services/firebase";
-import deleteImg from "../../assets/delete.svg";
-import { Container } from "./styles";
 import toast from "react-hot-toast";
+import { database } from "../../services/firebase";
+import { FiMinusCircle, FiEdit } from "react-icons/fi";
+import { Container } from "./styles";
 
 type FirebaseTransactions = Record<
   string,
@@ -42,12 +42,16 @@ type DashboardParams = {
 export function TransactionsTable() {
   const { id } = useParams<DashboardParams>();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [titleDashboard, setTitleDashboard] = useState("");
 
   useEffect(() => {
     const dashboardRef = database.ref(`dashboards/${id}`);
 
     dashboardRef.on("value", (dashboard) => {
       const databaseTransaction = dashboard.val();
+
+      setTitleDashboard(databaseTransaction.title);
+
       const firebaseTransactions: FirebaseTransactions =
         databaseTransaction.transactions || {};
 
@@ -60,9 +64,6 @@ export function TransactionsTable() {
           };
         }
       );
-
-      console.log(parsedTransaction);
-
       setTransactions(parsedTransaction);
     });
   }, [id]);
@@ -74,6 +75,17 @@ export function TransactionsTable() {
       .then(() => {
         toast.success("Transação removida!");
       });
+  }
+
+  async function handleEditTransaction(transactionId: string) {
+    const transaction = await database
+      .ref(`/dashboards/${id}/transactions/${transactionId}`)
+      .get()
+      .then((response) => {
+        return response.val();
+      });
+
+    console.log(transaction.content + transactionId);
   }
 
   return (
@@ -105,11 +117,18 @@ export function TransactionsTable() {
                     new Date(transaction.content.createdAt)
                   )}
                 </td>
-                <td>
+                <td className="actions">
+                  <button onClick={() => handleEditTransaction(transaction.id)}>
+                    <FiEdit className="edit" aria-label="Editar item" />
+                  </button>
+
                   <button
                     onClick={() => handleRemoveTransaction(transaction.id)}
                   >
-                    <img src={deleteImg} alt="Excluir item" />
+                    <FiMinusCircle
+                      className="delete"
+                      aria-label="Excluir item"
+                    />
                   </button>
                 </td>
               </tr>
@@ -117,6 +136,7 @@ export function TransactionsTable() {
           })}
         </tbody>
       </table>
+      <p>{titleDashboard}</p>
     </Container>
   );
 }

@@ -3,8 +3,9 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  margin-top: -5rem;
+  gap: 3rem;
+  margin-top: -9rem;
+  margin-bottom: 4rem;
 
   div {
     background: var(--shape);
@@ -16,6 +17,20 @@ export const Container = styled.div`
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      svg {
+        height: 3rem;
+        width: 3rem;
+
+        &.entradas {
+          color: var(--green);
+        }
+
+        &.saidas {
+          color: var(--red);
+        }
+      }
+
     }
 
     strong {

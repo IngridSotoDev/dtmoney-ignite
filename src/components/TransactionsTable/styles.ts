@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  margin-top: 4rem;
+  margin-top: 1rem;
 
   table {
     width: 100%;
@@ -21,10 +21,10 @@ export const Container = styled.div`
       text-align: left;
       background: var(--shape);
       color: var(--text-body);
-      border-radius: 0.25rem;
 
       &:first-child {
         color: var(--text-title);
+        border-radius: 0.25rem 0 0 0.25rem;
       }
 
       &.deposit {
@@ -35,16 +35,48 @@ export const Container = styled.div`
         color: var(--red);
       }
 
-      button {
+      &.actions {
         display: flex;
-        background: transparent;
-        border: 0;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
 
-        img {
-          width: 2rem;
-          height: 2rem;
+        button {
+          display: flex;
+          background: transparent;
+          border: 0;
+
+          svg {
+            width: 2.4rem;
+            height: 2.4rem;
+
+            transition: filter 0.2s;
+
+            &.delete {
+              color: var(--red);
+            }
+
+            &.edit {
+              color: var(--yellow);
+            }
+
+            &:hover {
+              filter: brightness(0.8);
+            }
+          }
         }
       }
+
+      &:last-child {
+        border-radius: 0 0.25rem 0.25rem 0;
+      }
     }
+  }
+
+  p {
+    margin: 3rem 0;
+    text-align: center;
+    color: var(--text-title);
+    font-size: 1.4rem;
   }
 `;
