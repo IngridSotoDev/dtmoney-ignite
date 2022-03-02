@@ -1,8 +1,7 @@
-import logoImg from "../../assets/logo.svg";
-import copyImg from "../../assets/copy.svg";
-import { Container, Content } from "./styles";
 import toast from "react-hot-toast";
 import { FiCopy, FiCornerLeftUp } from "react-icons/fi";
+import logoImg from "../../assets/logo.svg";
+import { Container, Content } from "./styles";
 
 interface HeaderProps {
   code?: string;

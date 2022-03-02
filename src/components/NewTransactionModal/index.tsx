@@ -1,13 +1,11 @@
 import { FormEvent, useState } from "react";
 import { useParams } from "react-router-dom";
-import { toast } from "react-hot-toast";
 import Modal from "react-modal";
+import { toast } from "react-hot-toast";
 import { FiArrowDownCircle, FiArrowUpCircle, FiX } from "react-icons/fi";
 import { database } from "../../services/firebase";
 import { useAuth } from "../../hooks/useAuth";
-// import { useTransactions } from "../../hooks/useTransactions";
 import { Container, TransactionTyleContainer, RadioBox } from "./styles";
-// import { transitions } from "polished";
 
 interface NewTransactionModalProps {
   isOpen: boolean;
@@ -38,34 +36,32 @@ export function NewTransactionModal({
       category.trim() === "" ||
       type.trim() === ""
     ) {
-      toast.error('Favor preencher todos os campos!')
-      return
+      toast.error("Favor preencher todos os campos!");
+      return;
     }
 
     if (!user) {
       signInWithGoogle();
-      toast.error('Você precisa estar logado!')
+      toast.error("Você precisa estar logado!");
     }
 
-    const createdAt = `${new Date()}`
+    const createdAt = `${new Date()}`;
 
     const transaction = {
-      content: {
-        title,
-        amount,
-        category,
-        type,
-        createdAt
-      },
-      author: {
-        name: user?.name,
-      },
+      title,
+      amount,
+      category,
+      type,
+      createdAt,
     };
 
-    await database.ref(`dashboards/${id}/transactions`).push(transaction).then(() => {
-      toast.success('Transação criada com sucesso!')
-    })
-    
+    await database
+      .ref(`dashboards/${id}/transactions`)
+      .push(transaction)
+      .then(() => {
+        toast.success("Transação criada com sucesso!");
+      });
+
     setTitle("");
     setAmount(0);
     setCategory("");
@@ -112,7 +108,6 @@ export function NewTransactionModal({
               setType("deposit");
             }}
           >
-
             <FiArrowUpCircle aria-label="Entrada" />
             <span>Entrada</span>
           </RadioBox>

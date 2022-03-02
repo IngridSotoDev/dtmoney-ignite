@@ -29,6 +29,7 @@ export const Content = styled.div`
     height: 4rem;
 
     div {
+      height: 100%;
       background: var(--green);
       padding: 0 1rem;
       border-radius: 0.25rem 0 0 0.25rem;
