@@ -67,7 +67,7 @@ export function useDashboard() {
         toast.error(error.message);
         navigate("/");
       });
-  }, [id]);
+  }, [id, navigate]);
 
   async function handleRemoveTransaction(transactionId: string) {
     await database
