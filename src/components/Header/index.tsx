@@ -1,5 +1,6 @@
 import toast from "react-hot-toast";
 import { FiCopy, FiCornerLeftUp } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import logoImg from "../../assets/logo.svg";
 import { Container, Content } from "./styles";
 
@@ -17,7 +18,9 @@ export function Header({ code }: HeaderProps) {
   return (
     <Container>
       <Content>
-        <img src={logoImg} alt="dtmoney" />
+        <Link to={"/"}>
+          <img src={logoImg} alt="dtmoney" />
+        </Link>
 
         <div>
           <button onClick={copyDashboardCodeToClipboard}>

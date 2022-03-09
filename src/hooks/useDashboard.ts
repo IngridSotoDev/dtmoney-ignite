@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { database } from "../services/firebase";
 
 interface Transaction {
@@ -29,6 +29,7 @@ type DashboardParams = {
 
 export function useDashboard() {
   const { id } = useParams<DashboardParams>();
+  const navigate = useNavigate();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [titleDashboard, setTitleDashboard] = useState("");
   const [transactionEdit, setTransactionEdit] = useState<Transaction>();
@@ -36,28 +37,36 @@ export function useDashboard() {
   useEffect(() => {
     const dashboardRef = database.ref(`dashboards/${id}`);
 
-    dashboardRef.on("value", (dashboard) => {
-      const databaseTransaction = dashboard.val();
-      setTitleDashboard(databaseTransaction.title);
+    dashboardRef
+      .get()
+      .then(() => {
+        dashboardRef.on("value", (dashboard) => {
+          const databaseTransaction = dashboard.val();
+          setTitleDashboard(databaseTransaction.title);
 
-      const firebaseTransactions: FirebaseTransactions =
-        databaseTransaction.transactions || {};
+          const firebaseTransactions: FirebaseTransactions =
+            databaseTransaction.transactions || {};
 
-      const parsedTransaction = Object.entries(firebaseTransactions).map(
-        ([key, value]) => {
-          return {
-            id: key,
-            title: value.title,
-            amount: value.amount,
-            category: value.category,
-            type: value.type,
-            createdAt: value.createdAt,
-          };
-        }
-      );
+          const parsedTransaction = Object.entries(firebaseTransactions).map(
+            ([key, value]) => {
+              return {
+                id: key,
+                title: value.title,
+                amount: value.amount,
+                category: value.category,
+                type: value.type,
+                createdAt: value.createdAt,
+              };
+            }
+          );
 
-      setTransactions(parsedTransaction);
-    });
+          setTransactions(parsedTransaction);
+        });
+      })
+      .catch((error) => {
+        toast.error(error.message);
+        navigate("/");
+      });
   }, [id]);
 
   async function handleRemoveTransaction(transactionId: string) {
@@ -65,7 +74,14 @@ export function useDashboard() {
       .ref(`/dashboards/${id}/transactions/${transactionId}`)
       .remove()
       .then(() => {
-        toast.success("Transação removida!");
+        return toast.success("Transação removida!");
+      })
+      .catch((error) => {
+        if (error.code === "PERMISSION_DENIED") {
+          return toast.error(
+            "Você não tem permissão de remover essa transação!"
+          );
+        }
       });
   }
 
@@ -87,6 +103,6 @@ export function useDashboard() {
     handleRemoveTransaction,
     handleEditTransaction,
     id,
-    transactionEdit
+    transactionEdit,
   };
 }

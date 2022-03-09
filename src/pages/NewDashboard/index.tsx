@@ -34,7 +34,7 @@ export function NewDashboard() {
     <Container>
       <aside>
         <strong>Controle as suas finanças</strong>
-        <p>Tenha controle do seu fluxo de caixa</p>
+        <p>Tenha controle do seu fluxo financeiro</p>
         <div className="illustration">
           <img
             src={accountantImg}

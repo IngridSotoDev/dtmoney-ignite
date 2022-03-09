@@ -36,10 +36,6 @@ export const Container = styled.div`
       }
 
       &.actions {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
 
         button {
           display: flex;

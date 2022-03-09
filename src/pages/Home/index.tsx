@@ -31,19 +31,15 @@ export function Home() {
       return;
     }
 
-    const dashboardRef = await database.ref(`dashboards/${dashboardCode}`).get();
-
-    if (!dashboardRef.exists()) {
-      toast.error("Dashboard não encontrado!");
-      return;
-    }
-
-    if (dashboardRef.val().endedAt) {
-      alert("Dashboard already closed.");
-      return;
-    }
-
-    navigate(`/dashboard/${dashboardCode}`);
+    await database
+      .ref(`dashboards/${dashboardCode}`)
+      .get()
+      .then(() => {
+        navigate(`/dashboard/${dashboardCode}`);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   }
 
   return (
@@ -82,7 +78,7 @@ export function Home() {
             <ButtonAccess type="submit">
               <FiLogIn aria-label="Acessar dashboard" />
               Acessar dashboard
-              </ButtonAccess>
+            </ButtonAccess>
           </form>
         </div>
       </main>
